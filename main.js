@@ -10,7 +10,7 @@ const j2e = require("json2emap")
 const express = require("express")
 const app = express();
 app.get("/logix", (req, res) => {
-    if (!req.query.q || !req.query.type) {
+    if (!req.query.q) {
         res.status(400).send("BAD_REQUEST")
         return
     }

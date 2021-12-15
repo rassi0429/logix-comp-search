@@ -1,0 +1,17 @@
+{
+  "name": "logix-comp-search",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fuzzy-search": "^3.2.1",
+    "json2emap": "git+https://github.com/rheniumNV/json2emap.git",
+    "lodash": "^4.17.21"
+  }
+}

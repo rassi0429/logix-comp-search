@@ -25,7 +25,7 @@ app.get("/logix", (req, res) => {
     if (req.query.details) {
         result = result.map((r) => { return logix.find(e => e.pathName === r) })
         if (req.query.details != "full") {
-            result = result.map(r => { return _.pick(r, ["pathName", "id"]) })
+            result = result.map(r => { return _.pick(r, ["pathName", "fullName"]) })
         }
     }
     res.send(req.query.emap ? j2e(result) : result)

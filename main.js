@@ -10,7 +10,7 @@ const j2e = require("json2emap")
 const express = require("express")
 const app = express();
 
-app.get("/logix/:id/fullName",(req,res) => {
+app.get("/logix/:id/fullName", (req, res) => {
     res.send(logix.find((l) => l.id === Number(req.params.id)).fullName)
 })
 
@@ -28,6 +28,16 @@ app.get("/logix", (req, res) => {
             result = result.map(r => { return _.pick(r, ["pathName", "fullName"]) })
         }
     }
+
+    if (req.query.limit) {
+        const limit = Number(req.query.limit);
+        if (!Number.isInteger(limit) || limit <= 0) {
+            res.status(400).send("BAD_REQUEST")
+            return
+        }
+        result = result.slice(0, limit)
+    }
+
     res.send(req.query.emap ? j2e(result) : result)
 })
 
@@ -36,5 +46,3 @@ app.get("/logix", (req, res) => {
 const server = app.listen(3000, function () {
     console.log("ok port:" + server.address().port)
 });
-
-

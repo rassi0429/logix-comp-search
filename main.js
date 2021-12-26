@@ -1,6 +1,11 @@
 const _ = require("lodash")
 const fuzzy = require("fuzzy-search")
-const logix = require("./LogiX.json")
+const logix = require("./LogiX.json").map(l => {
+    return {
+        ...l,
+        pathName: l.pathName.startsWith('LogiX/') ? l.pathName.slice(6) : l.pathName
+    }
+})
 const names = [...new Set(logix.map((l) => l.pathName))]
 
 console.log(`LogiX Node Count : ${names.length}`)

@@ -6,10 +6,14 @@ const logix = require("./LogiX.json").map(l => {
         pathName: l.pathName.startsWith('LogiX/') ? l.pathName.slice(6) : l.pathName
     }
 })
-const names = [...new Set(logix.map((l) => l.pathName))]
+const component = require("./Component.json")
 
-console.log(`LogiX Node Count : ${names.length}`)
-const searcher = new fuzzy(names, [], { sort: true })
+const logixNames = [...new Set(logix.map((l) => l.pathName))]
+const componentNames = [...new Set(component.map((l) => l.pathName))]
+
+console.log(`LogiX Node Count : ${logixNames.length}`)
+const logixSearcher = new fuzzy(logixNames, [], { sort: true })
+const componentSearcher = new fuzzy(componentNames, [], { sort: true })
 
 const j2e = require("json2emap")
 const express = require("express")
@@ -26,10 +30,10 @@ app.get("/logix", (req, res) => {
         return
     }
 
-    let result = searcher.search(req.query.q)
+    let result = logixSearcher.search(req.query.q)
     if (req.query.details) {
         result = result.map((r) => { return logix.find(e => e.pathName === r) })
-        if (req.query.details != "full") {
+        if (req.query.details !== "full") {
             result = result.map(r => { return _.pick(r, ["pathName", "fullName"]) })
         }
     }
@@ -45,6 +49,33 @@ app.get("/logix", (req, res) => {
 
     res.send(req.query.emap ? j2e(result) : result)
 })
+
+app.get("/component", (req, res) => {
+    if (!req.query.q) {
+        res.status(400).send("BAD_REQUEST")
+        return
+    }
+
+    let result = componentSearcher.search(req.query.q)
+    if (req.query.details) {
+        result = result.map((r) => { return component.find(e => e.pathName === r) })
+        if (req.query.details !== "full") {
+            result = result.map(r => { return _.pick(r, ["pathName", "fullName"]) })
+        }
+    }
+
+    if (req.query.limit) {
+        const limit = Number(req.query.limit);
+        if (!Number.isInteger(limit) || limit <= 0) {
+            res.status(400).send("BAD_REQUEST")
+            return
+        }
+        result = result.slice(0, limit)
+    }
+
+    res.send(req.query.emap ? j2e(result) : result)
+})
+
 
 
 

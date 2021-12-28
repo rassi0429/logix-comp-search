@@ -20,6 +20,11 @@ const j2e = require("json2emap")
 const express = require("express")
 const app = express();
 
+app.get("/logix/:fullName", (req, res) => {
+    res.send(logix.find((l) => l.fullName === req.params.fullName))
+})
+
+
 app.get("/logix", (req, res) => {
     if (!req.query.q) {
         res.status(400).send("BAD_REQUEST")

@@ -12,6 +12,7 @@ const logixNames = [...new Set(logix.map((l) => l.pathName))]
 const componentNames = [...new Set(component.map((l) => l.pathName))]
 
 console.log(`LogiX Node Count : ${logixNames.length}`)
+console.log(`Component Count : ${componentNames.length}`)
 const logixSearcher = new fuzzy(logixNames, [], { sort: true })
 const componentSearcher = new fuzzy(componentNames, [], { sort: true })
 

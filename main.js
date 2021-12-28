@@ -20,11 +20,6 @@ const j2e = require("json2emap")
 const express = require("express")
 const app = express();
 
-app.get("/logix/:id/fullName", (req, res) => {
-    res.send(logix.find((l) => l.id === Number(req.params.id)).fullName)
-})
-
-
 app.get("/logix", (req, res) => {
     if (!req.query.q) {
         res.status(400).send("BAD_REQUEST")
@@ -50,6 +45,12 @@ app.get("/logix", (req, res) => {
 
     res.send(req.query.emap ? j2e(result) : result)
 })
+
+
+app.get("/component/:fullName", (req, res) => {
+    res.send(component.find((l) => l.fullName === req.params.fullName))
+})
+
 
 app.get("/component", (req, res) => {
     if (!req.query.q) {

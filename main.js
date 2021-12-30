@@ -64,6 +64,11 @@ app.get("/component", (req, res) => {
     }
 
     let result = componentSearcher.search(req.query.q)
+
+    if(!req.query.logix) {
+        result = result.filter((c) => !c.startsWith("/LogiX"))
+    }
+
     if (req.query.details) {
         result = result.map((r) => { return component.find(e => e.pathName === r) })
         if (req.query.details !== "full") {

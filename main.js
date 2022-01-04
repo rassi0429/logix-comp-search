@@ -21,7 +21,8 @@ const express = require("express")
 const app = express();
 
 app.get("/logix/:fullName", (req, res) => {
-    res.send(logix.find((l) => l.fullName === req.params.fullName))
+    const result = logix.find((l) => l.fullName === req.params.fullName)
+    res.send(req.query.emap ? j2e(result) : result)
 })
 
 
@@ -53,7 +54,8 @@ app.get("/logix", (req, res) => {
 
 
 app.get("/component/:fullName", (req, res) => {
-    res.send(component.find((l) => l.fullName === req.params.fullName))
+    const result = component.find((l) => l.fullName === req.params.fullName)
+    res.send(req.query.emap ? j2e(result) : result)
 })
 
 

@@ -8,8 +8,8 @@ const logix = require("./LogiX.json").map(l => {
 })
 const component = require("./Component.json")
 
-const logixNames = [...new Set(logix.map((l) => l.pathName))]
-const componentNames = [...new Set(component.map((l) => l.pathName))]
+const logixNames = [...new Set(logix.map((l) => l.name))]
+const componentNames = [...new Set(component.map((l) => l.name))]
 
 console.log(`LogiX Node Count : ${logixNames.length}`)
 console.log(`Component Count : ${componentNames.length}`)
@@ -34,7 +34,7 @@ app.get("/logix", (req, res) => {
 
     let result = logixSearcher.search(req.query.q)
     if (req.query.details) {
-        result = result.map((r) => { return logix.find(e => e.pathName === r) })
+        result = result.map((r) => { return logix.find(e => e.name === r) })
         if (req.query.details !== "full") {
             result = result.map(r => { return _.pick(r, ["pathName", "fullName"]) })
         }
@@ -67,12 +67,12 @@ app.get("/component", (req, res) => {
 
     let result = componentSearcher.search(req.query.q)
 
-    if(!req.query.logix) {
+    if (!req.query.logix) {
         result = result.filter((c) => !c.startsWith("/LogiX"))
     }
 
     if (req.query.details) {
-        result = result.map((r) => { return component.find(e => e.pathName === r) })
+        result = result.map((r) => { return component.find(e => e.name === r) })
         if (req.query.details !== "full") {
             result = result.map(r => { return _.pick(r, ["pathName", "fullName"]) })
         }

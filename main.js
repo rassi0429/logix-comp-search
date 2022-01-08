@@ -67,16 +67,22 @@ app.get("/component", (req, res) => {
 
     let result = componentSearcher.search(req.query.q)
 
+
+
+    result = result.map((r) => { return component.find(e => e.name === r) })
+
     if (!req.query.logix) {
-        result = result.filter((c) => !c.startsWith("/LogiX"))
+        result = result.filter((c) => !c.pathName.startsWith("/LogiX"))
     }
 
-    if (req.query.details) {
-        result = result.map((r) => { return component.find(e => e.name === r) })
-        if (req.query.details !== "full") {
-            result = result.map(r => { return _.pick(r, ["pathName", "fullName"]) })
-        }
+    if (req.query.details === "min") {
+        result = result.map(r => { return _.pick(r, ["pathName", "fullName"]) })
+    } else if (!req.query.details) {
+        result = result.map(r => { return _.pick(r, ["pathName"]) }).map(k => k.pathName)
     }
+
+    
+
 
     if (req.query.limit) {
         const limit = Number(req.query.limit);
